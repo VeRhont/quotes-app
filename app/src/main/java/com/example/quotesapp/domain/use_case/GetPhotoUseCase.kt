@@ -18,7 +18,10 @@ class GetPhotoUseCase @Inject constructor(
     operator fun invoke(): Flow<Resource<Photo>> = flow {
         try {
             emit(Resource.Loading<Photo>())
-            val photo = repository.getPhoto(Orientation.PORTRAIT.value).toPhoto()
+            val photo = repository.getPhoto(
+                "627564, 401930, 539016",
+                Orientation.PORTRAIT.value,
+            ).toPhoto()
             emit(Resource.Success<Photo>(photo))
         } catch (e: HttpException) {
             emit(Resource.Error<Photo>(e.localizedMessage ?: "An unexpected error occurred"))

@@ -7,10 +7,10 @@ import javax.inject.Inject
 
 
 class PhotoRepositoryImpl @Inject constructor(
-    private val api: UnsplashApi
+    private val api: UnsplashApi,
 ) : PhotoRepository {
 
-    override suspend fun getPhoto(orientation: String): PhotoDto {
-        return api.getPhoto(orientation)
+    override suspend fun getPhoto(collections: String, orientation: String): PhotoDto {
+        return api.getPhoto(collections, orientation)
     }
 }

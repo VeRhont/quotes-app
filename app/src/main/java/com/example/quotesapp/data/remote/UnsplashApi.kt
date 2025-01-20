@@ -12,7 +12,8 @@ interface UnsplashApi {
     @Headers("Authorization: Client-ID ${BuildConfig.UNSPLASH_API_KEY}")
     @GET("/photos/random")
     suspend fun getPhoto(
-        @Query("orientation") orientation: String
+        @Query("collections") collections: String,
+        @Query("orientation") orientation: String,
     ): PhotoDto
 
 }

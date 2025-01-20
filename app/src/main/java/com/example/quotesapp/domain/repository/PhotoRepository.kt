@@ -5,6 +5,9 @@ import com.example.quotesapp.data.remote.dto.PhotoDto
 
 interface PhotoRepository {
 
-    suspend fun getPhoto(orientation: String): PhotoDto
+    suspend fun getPhoto(
+        collections: String,
+        orientation: String,
+    ): PhotoDto
 
 }
