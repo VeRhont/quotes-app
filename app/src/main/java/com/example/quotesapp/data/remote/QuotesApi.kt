@@ -8,7 +8,7 @@ import retrofit2.http.Headers
 
 interface QuotesApi {
 
-    @Headers("X-Api-Key: ${BuildConfig.QUOTE_API_KEY}")
+    @Headers("X-Api-Key: ${BuildConfig.QUOTES_API_KEY}")
     @GET("/v1/quotes")
     suspend fun getQuote(): List<QuotesDto>
 }

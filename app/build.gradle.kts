@@ -25,7 +25,8 @@ android {
         var properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
 
-        buildConfigField("String", "QUOTE_API_KEY", "\"${properties.getProperty("QUOTE_API_KEY")}\"")
+        buildConfigField("String", "QUOTES_API_KEY", "\"${properties.getProperty("QUOTES_API_KEY")}\"")
+        buildConfigField("String", "UNSPLASH_API_KEY", "\"${properties.getProperty("UPSPLASH_API_KEY")}\"")
     }
 
     buildTypes {
