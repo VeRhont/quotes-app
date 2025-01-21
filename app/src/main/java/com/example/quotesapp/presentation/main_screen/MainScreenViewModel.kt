@@ -1,6 +1,7 @@
 package com.example.quotesapp.presentation.main_screen
 
-import android.util.Log
+import android.content.Context
+import android.graphics.Bitmap
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.quotesapp.common.Resource
 import com.example.quotesapp.domain.use_case.GetPhotoUseCase
 import com.example.quotesapp.domain.use_case.GetQuoteUseCase
+import com.example.quotesapp.domain.use_case.SavePhotoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -17,18 +19,18 @@ import javax.inject.Inject
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
     private val getQuoteUseCase: GetQuoteUseCase,
-    private val getPhotoUseCase: GetPhotoUseCase
+    private val getPhotoUseCase: GetPhotoUseCase,
+    private val savePhotoUseCase: SavePhotoUseCase
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(MainScreenState())
-    val state: State<MainScreenState> = _state
+    private val _quoteState = mutableStateOf(MainScreenState())
+    val quoteState: State<MainScreenState> = _quoteState
 
     private val _photoState = mutableStateOf(MainScreenState())
     val photoState: State<MainScreenState> = _photoState
 
     init {
         getPhoto()
-        getQuote()
     }
 
     private fun getQuote() {
@@ -36,17 +38,17 @@ class MainScreenViewModel @Inject constructor(
 
             when (result) {
                 is Resource.Error -> {
-                    _state.value = MainScreenState(
+                    _quoteState.value = MainScreenState(
                         error = result.message ?: "An unexpected error occurred"
                     )
                 }
 
                 is Resource.Loading -> {
-                    _state.value = MainScreenState(isLoading = true)
+                    _quoteState.value = MainScreenState(isLoading = true)
                 }
 
                 is Resource.Success -> {
-                    _state.value = MainScreenState(quote = result.data)
+                    _quoteState.value = MainScreenState(quote = result.data)
                 }
             }
 
@@ -68,10 +70,14 @@ class MainScreenViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
-                    Log.d("SUCCESS", result.data.toString())
                     _photoState.value = MainScreenState(photo = result.data)
+                    getQuote()
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun savePhoto(context: Context, bitmap: Bitmap) {
+        savePhotoUseCase(context, bitmap)
     }
 }

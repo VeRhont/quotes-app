@@ -1,34 +1,25 @@
 package com.example.quotesapp.presentation.main_screen
 
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
-import com.example.quotesapp.presentation.theme.AuthorColor
-import com.example.quotesapp.presentation.theme.BackgroundColor
-import com.example.quotesapp.presentation.theme.BackgroundColorDark
-import com.example.quotesapp.presentation.theme.QuoteColor
+import com.example.quotesapp.presentation.main_screen.components.Photo
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -36,73 +27,57 @@ fun MainScreen(
     viewModel: MainScreenViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
 ) {
-    val state = viewModel.state.value
+    val quoteState = viewModel.quoteState.value
     val photoState = viewModel.photoState.value
 
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val graphicsLayer = rememberGraphicsLayer()
+
     Box(
-        modifier = modifier
-            .fillMaxSize().background(Color.Red),
-        contentAlignment = Alignment.Center
-    ) {
+        modifier = Modifier
+            .drawWithContent {
+                graphicsLayer.record {
+                    this@drawWithContent.drawContent()
+                }
+                drawLayer(graphicsLayer)
+            }
+            .clickable {
+                coroutineScope.launch {
+                    val bitmap = graphicsLayer
+                        .toImageBitmap()
+                        .asAndroidBitmap()
 
-        photoState.photo?.let {
-            Image(
-                painter = rememberAsyncImagePainter(it.url),
-                contentDescription = it.description,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillBounds
-            )
-        }
-
-        Spacer(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            BackgroundColor,
-                            BackgroundColorDark
-                        )
+                    viewModel.savePhoto(
+                        context = context,
+                        bitmap = bitmap
                     )
-                )
-        )
-
-        Column(
-            modifier = Modifier
+                }
+            }
+    ) {
+        Box(
+            modifier = modifier
                 .fillMaxSize()
-                .padding(60.dp, 100.dp),
-//                .background(Color.Red),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .background(Color.Red),
+            contentAlignment = Alignment.Center
         ) {
-            state.quote?.let {
-                Text(
-                    text = it.quote,
-                    color = QuoteColor,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
-                )
 
-                Spacer(modifier = Modifier.height(20.dp))
+            Photo(photoState, quoteState)
 
+            if (quoteState.error.isNotBlank()) {
                 Text(
-                    text = it.author,
-                    color = AuthorColor,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.SemiBold
+                    text = quoteState.error,
+                    color = MaterialTheme.colorScheme.error,
                 )
             }
-        }
 
-        if (state.error.isNotBlank()) {
-            Text(
-                text = state.error,
-                color = MaterialTheme.colorScheme.error,
-            )
-        }
+            if (photoState.isLoading) {
+                CircularProgressIndicator()
+            }
 
-        if (state.isLoading) {
-            CircularProgressIndicator()
+            if (quoteState.isLoading) {
+                CircularProgressIndicator()
+            }
         }
     }
 }
