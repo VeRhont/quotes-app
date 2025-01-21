@@ -30,9 +30,9 @@ fun MainScreen(
     val quoteState = viewModel.quoteState.value
     val photoState = viewModel.photoState.value
 
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
     val graphicsLayer = rememberGraphicsLayer()
+    val coroutineScope = rememberCoroutineScope()
+    val contentResolver = LocalContext.current.contentResolver
 
     Box(
         modifier = Modifier
@@ -49,7 +49,7 @@ fun MainScreen(
                         .asAndroidBitmap()
 
                     viewModel.savePhoto(
-                        context = context,
+                        contentResolver = contentResolver,
                         bitmap = bitmap
                     )
                 }
@@ -57,8 +57,7 @@ fun MainScreen(
     ) {
         Box(
             modifier = modifier
-                .fillMaxSize()
-                .background(Color.Red),
+                .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
 

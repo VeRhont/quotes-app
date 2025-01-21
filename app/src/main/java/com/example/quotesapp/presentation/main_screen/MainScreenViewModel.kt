@@ -1,5 +1,6 @@
 package com.example.quotesapp.presentation.main_screen
 
+import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.runtime.State
@@ -77,7 +78,7 @@ class MainScreenViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun savePhoto(context: Context, bitmap: Bitmap) {
-        savePhotoUseCase(context, bitmap)
+    fun savePhoto(contentResolver: ContentResolver, bitmap: Bitmap) {
+        savePhotoUseCase(contentResolver, bitmap)
     }
 }

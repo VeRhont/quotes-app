@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ import com.example.quotesapp.presentation.theme.AuthorColor
 import com.example.quotesapp.presentation.theme.BackgroundColor
 import com.example.quotesapp.presentation.theme.BackgroundColorDark
 import com.example.quotesapp.presentation.theme.QuoteColor
+import com.example.quotesapp.presentation.theme.kleeOneFontFamily
 
 @Composable
 fun Photo(photoState: MainScreenState, quoteState: MainScreenState) {
@@ -59,29 +61,24 @@ fun Photo(photoState: MainScreenState, quoteState: MainScreenState) {
     ) {
 
         quoteState.quote?.let {
-            Text(
-                text = "\"",
-                fontSize = 62.sp,
-                fontWeight = FontWeight.Bold,
-//                    fontFamily = FontFamily()
-                color = QuoteColor
-            )
 
             Text(
-                text = it.quote,
+                text = "\"${it.quote}\"",
                 color = QuoteColor,
                 fontSize = 24.sp,
-                textAlign = TextAlign.Center
-//                    fontWeight = FontWeight.SemiBold
+                textAlign = TextAlign.Center,
+                fontFamily = kleeOneFontFamily,
+                fontWeight = FontWeight.SemiBold
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             Text(
                 text = it.author,
                 color = AuthorColor,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = kleeOneFontFamily,
             )
         }
     }
