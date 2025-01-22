@@ -76,9 +76,9 @@ fun Photo(photoState: MainScreenState, quoteState: MainScreenState) {
             Text(
                 text = it.author,
                 color = AuthorColor,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontSize = 18.sp,
                 fontFamily = kleeOneFontFamily,
+                fontWeight = FontWeight.SemiBold,
             )
         }
     }

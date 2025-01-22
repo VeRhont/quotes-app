@@ -88,6 +88,9 @@ dependencies {
     // Navigation
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+
+    // Extended icons
+    implementation(libs.androidx.material.icons.extended)
 }
 
 // Allow references to generated code
