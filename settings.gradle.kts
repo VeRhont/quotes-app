@@ -9,6 +9,8 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
+
+
     }
 }
 dependencyResolutionManagement {
@@ -18,6 +20,10 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+
+
+
 
 rootProject.name = "Quotes App"
 include(":app")

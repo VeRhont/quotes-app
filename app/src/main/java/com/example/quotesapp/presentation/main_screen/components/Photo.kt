@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -26,6 +25,7 @@ import com.example.quotesapp.presentation.theme.BackgroundColor
 import com.example.quotesapp.presentation.theme.BackgroundColorDark
 import com.example.quotesapp.presentation.theme.QuoteColor
 import com.example.quotesapp.presentation.theme.kleeOneFontFamily
+
 
 @Composable
 fun Photo(photoState: MainScreenState, quoteState: MainScreenState) {
@@ -82,6 +82,4 @@ fun Photo(photoState: MainScreenState, quoteState: MainScreenState) {
             )
         }
     }
-
-
 }

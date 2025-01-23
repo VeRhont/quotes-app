@@ -2,7 +2,6 @@ package com.example.quotesapp.domain.use_case
 
 import android.content.ContentResolver
 import android.content.ContentValues
-import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Environment
@@ -19,7 +18,7 @@ class SavePhotoUseCase @Inject constructor(
     private val repository: PhotoRepository,
 ) {
 
-    operator fun invoke(contentResolver: ContentResolver, bitmap: Bitmap) {
+    operator fun invoke(contentResolver: ContentResolver, bitmap: Bitmap): Boolean {
 
         val fileName = "photo-${System.currentTimeMillis()}.jpg"
         var outputStream: OutputStream? = null
@@ -62,5 +61,6 @@ class SavePhotoUseCase @Inject constructor(
                 e.printStackTrace()
             }
         }
+        return true
     }
 }

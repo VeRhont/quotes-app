@@ -1,5 +1,6 @@
 package com.example.quotesapp.presentation.main_screen
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.CircularProgressIndicator
@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.quotesapp.presentation.main_screen.components.Photo
 import com.example.quotesapp.presentation.theme.ButtonColor
 import com.example.quotesapp.presentation.theme.QuoteColor
@@ -35,7 +34,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(
-    viewModel: MainScreenViewModel = hiltViewModel(),
+    viewModel: MainScreenViewModel,
     modifier: Modifier = Modifier,
 ) {
     val quoteState = viewModel.quoteState.value
@@ -43,7 +42,7 @@ fun MainScreen(
 
     val graphicsLayer = rememberGraphicsLayer()
     val coroutineScope = rememberCoroutineScope()
-    val contentResolver = LocalContext.current.contentResolver
+    val context = LocalContext.current
 
     Box(
         modifier = modifier
@@ -77,7 +76,7 @@ fun MainScreen(
 
                 FloatingActionButton(
                     onClick = {
-                        viewModel.updatePhoto()
+                        viewModel.loadNewPhoto()
                     },
                     containerColor = ButtonColor,
                     contentColor = QuoteColor
@@ -92,10 +91,13 @@ fun MainScreen(
                                 .toImageBitmap()
                                 .asAndroidBitmap()
 
-                            viewModel.savePhoto(
-                                contentResolver = contentResolver,
+                            viewModel.trySavePhoto(
+                                contentResolver = context.contentResolver,
                                 bitmap = bitmap
-                            )
+                            ).let {
+                                val text = if (it) "Image saved" else "Failed to save image"
+                                Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+                            }
                         }
                     },
                     containerColor = ButtonColor,

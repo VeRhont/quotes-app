@@ -91,6 +91,8 @@ dependencies {
 
     // Extended icons
     implementation(libs.androidx.material.icons.extended)
+
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.8.1")
 }
 
 // Allow references to generated code

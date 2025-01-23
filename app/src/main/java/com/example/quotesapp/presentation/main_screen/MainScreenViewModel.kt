@@ -2,12 +2,13 @@ package com.example.quotesapp.presentation.main_screen
 
 import android.content.ContentResolver
 import android.graphics.Bitmap
-import android.widget.Toast
+import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quotesapp.common.Resource
+import com.example.quotesapp.domain.model.Photo
 import com.example.quotesapp.domain.use_case.GetPhotoUseCase
 import com.example.quotesapp.domain.use_case.GetQuoteUseCase
 import com.example.quotesapp.domain.use_case.SavePhotoUseCase
@@ -21,7 +22,7 @@ import javax.inject.Inject
 class MainScreenViewModel @Inject constructor(
     private val getQuoteUseCase: GetQuoteUseCase,
     private val getPhotoUseCase: GetPhotoUseCase,
-    private val savePhotoUseCase: SavePhotoUseCase
+    private val savePhotoUseCase: SavePhotoUseCase,
 ) : ViewModel() {
 
     private val _quoteState = mutableStateOf(MainScreenState())
@@ -78,11 +79,17 @@ class MainScreenViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun savePhoto(contentResolver: ContentResolver, bitmap: Bitmap) {
-        savePhotoUseCase(contentResolver, bitmap)
+    fun trySavePhoto(contentResolver: ContentResolver, bitmap: Bitmap): Boolean {
+        return savePhotoUseCase(contentResolver, bitmap)
     }
 
-    fun updatePhoto() {
+    fun loadNewPhoto() {
         getPhoto()
+    }
+
+    fun photo(uri: Uri) {
+        _photoState.value = MainScreenState(
+            photo = Photo(url = uri.toString(), description = "")
+        )
     }
 }
