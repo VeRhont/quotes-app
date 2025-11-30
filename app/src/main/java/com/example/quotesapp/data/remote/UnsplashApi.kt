@@ -17,6 +17,3 @@ interface UnsplashApi {
     ): PhotoDto
 
 }
-
-
-

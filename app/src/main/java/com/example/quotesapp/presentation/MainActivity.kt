@@ -26,9 +26,6 @@ class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<MainScreenViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        Log.d("MAIN_ACTIVITY", "OnCreate()")
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -44,8 +41,6 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        Log.d("MAIN_ACTIVITY", "Getting intent")
-
         val uri = if (Build.VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
         } else {
@@ -53,7 +48,6 @@ class MainActivity : ComponentActivity() {
         }
 
         uri?.let {
-            Log.d("MAIN_ACTIVITY", uri.toString())
             viewModel.photo(it)
         }
     }

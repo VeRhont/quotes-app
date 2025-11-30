@@ -15,6 +15,6 @@ data class PhotoDto(
 fun PhotoDto.toPhoto(): Photo {
     return Photo(
         url = urls.small,
-        description = description ?: ""
+        description = description.orEmpty()
     )
 }

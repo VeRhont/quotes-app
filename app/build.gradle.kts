@@ -42,11 +42,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_18
-        targetCompatibility = JavaVersion.VERSION_18
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "18"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -78,21 +78,31 @@ dependencies {
     implementation(libs.okhttp)
 
     //Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Images
-    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
+    implementation(libs.coil.compose)
 
     // Navigation
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 
-    // Extended icons
     implementation(libs.androidx.material.icons.extended)
 
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.8.1")
+    debugImplementation(libs.leakcanary.android)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+
+    testImplementation(libs.mockwebserver)
+
+    testImplementation(libs.retrofit)
+    testImplementation(libs.converter.gson)
+
+    testImplementation(libs.hilt.android.testing)
+//    kaptTest(libs.hilt.compiler)
 }
 
 // Allow references to generated code
